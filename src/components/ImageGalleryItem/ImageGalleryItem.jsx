@@ -1,14 +1,8 @@
-const ImageGalleryItem = ({ images }) => {
+const ImageGalleryItem = ({ url }) => {
   return (
-    <>
-      {images.map(({ id, webformatURL }) => {
-        return (
-          <li key={id}>
-            <img src={webformatURL} alt="" />
-          </li>
-        );
-      })}
-    </>
+    <li>
+      <img src={url} alt="" />
+    </li>
   );
 };
 

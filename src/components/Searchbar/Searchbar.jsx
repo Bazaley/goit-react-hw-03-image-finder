@@ -1,38 +1,41 @@
 import { Component } from 'react';
-import { Header, Form, Button, Input } from './Searchbar.styled';
+import { Header, Button, Input, Wrapper } from './Searchbar.styled';
 
 class Searchbar extends Component {
   state = {
-    text: '',
+    query: '',
   };
 
   handleChange = e => {
-    this.setState({ text: e.target.value });
+    this.setState({ query: e.target.value });
   };
 
   onSubmit = e => {
     e.preventDefault();
-    this.props.onSubmit(this.state.text);
+    this.props.onSubmit(this.state.query);
+    this.setState({ query: '' });
   };
 
   render() {
     return (
       <Header>
-        <Form onSubmit={this.onSubmit}>
-          <Button type="submit">
-            <span className="button-label">Search</span>
-          </Button>
+        <form onSubmit={this.onSubmit}>
+          <Wrapper>
+            <Button type="submit">
+              <span>Search</span>
+            </Button>
 
-          <Input
-            className="input"
-            type="text"
-            value={this.state.text}
-            onChange={this.handleChange}
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-          />
-        </Form>
+            <Input
+              type="text"
+              name="query"
+              value={this.state.query}
+              onChange={this.handleChange}
+              autoComplete="off"
+              autoFocus
+              placeholder="Search images and photos"
+            />
+          </Wrapper>
+        </form>
       </Header>
     );
   }

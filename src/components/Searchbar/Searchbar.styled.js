@@ -7,10 +7,8 @@ const Header = styled.header`
   background-color: blue;
 `;
 
-const Form = styled.form`
+const Wrapper = styled.div`
   position: relative;
-  width: 300px;
-  height: 50px;
 `;
 
 const Button = styled.button`
@@ -23,4 +21,4 @@ const Input = styled.input`
   height: 100%;
 `;
 
-export { Header, Form, Button, Input };
+export { Header, Button, Input, Wrapper };
