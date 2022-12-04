@@ -12,7 +12,6 @@ const Backdrop = styled.div`
 
 const ModalW = styled.div`
   position: absolute;
-  width: 650px;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);

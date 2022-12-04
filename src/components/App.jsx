@@ -42,7 +42,6 @@ class App extends Component {
         this.setState({
           notification: true,
           isLoader: false,
-          showButton: true,
         });
         return;
       }
