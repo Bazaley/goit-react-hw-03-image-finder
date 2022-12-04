@@ -8,6 +8,7 @@ import { Button } from './Button/Button';
 import Modal from './Modal/Modal';
 import { Circles } from 'react-loader-spinner';
 import { Notification } from './Notification/Notification';
+import { animateScroll as scroll } from 'react-scroll';
 
 class App extends Component {
   state = {
@@ -68,6 +69,7 @@ class App extends Component {
 
   onLoadeMore = e => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
+    this.scrollToTop();
   };
 
   openModal = image => {
@@ -76,6 +78,10 @@ class App extends Component {
 
   closeModal = () => {
     this.setState({ imageModal: null });
+  };
+
+  scrollToTop = () => {
+    scroll.scrollMore(755);
   };
 
   render() {
