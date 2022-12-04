@@ -1,51 +1,63 @@
 import { Component } from 'react';
+import { Section } from './Section/Section';
 import { fetchImages } from '../services/pixabayApi';
 import { desiredQueryProperties } from '../Utils/desiredQueryProperties';
-import Searchbar from './Searchbar/Searchbar';
+import { Header } from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import { Button } from './Button/Button';
-
-import { BallTriangle } from 'react-loader-spinner';
+import Modal from './Modal/Modal';
+import { Circles } from 'react-loader-spinner';
+import { Notification } from './Notification/Notification';
 
 class App extends Component {
   state = {
     images: [],
     page: 1,
     query: '',
+    imageModal: null,
     showButton: false,
     notification: false,
     isLoader: false,
   };
 
-  async componentDidUpdate(_, prevState) {
+  componentDidUpdate(_, prevState) {
+    const { page, query } = this.state;
+
+    if (query !== prevState.query || page !== prevState.page) {
+      this.getImages();
+    }
+  }
+
+  getImages = async () => {
     const { page, query } = this.state;
 
     try {
-      this.setState({ isLoader: true });
+      this.setState({ isLoader: true, showButton: false });
+
       const {
         data: { hits },
       } = await fetchImages(query, page);
 
-      if (
-        (query !== prevState.query || page !== prevState.page) &&
-        hits.length !== 0
-      ) {
-        this.setState(prevState => ({
-          images: [...prevState.images, ...desiredQueryProperties(hits)],
-          showButton: true,
+      if (!hits.length) {
+        this.setState({
+          notification: true,
           isLoader: false,
-        }));
+          showButton: true,
+        });
+        return;
       }
 
-      if (!hits.length) {
-        this.setState({ notification: true });
-      }
+      this.setState(prevState => ({
+        isLoader: false,
+        images: [...prevState.images, ...desiredQueryProperties(hits)],
+        showButton: true,
+      }));
     } catch (error) {
       console.log(error.message);
     }
-  }
+  };
 
-  getImages = query => {
+  requestHandler = query => {
     this.setState({
       query,
       images: [],
@@ -59,27 +71,43 @@ class App extends Component {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
+  openModal = image => {
+    this.setState({ imageModal: image });
+  };
+
+  closeModal = () => {
+    this.setState({ imageModal: null });
+  };
+
   render() {
-    const { images, showButton, notification, isLoader } = this.state;
+    const { images, showButton, notification, isLoader, imageModal } =
+      this.state;
     return (
       <>
-        <Searchbar onSubmit={this.getImages} />
-        <ImageGallery images={images} />
-        {showButton && (
-          <Button text="Loade more" onLoadeMore={this.onLoadeMore} />
-        )}
-        {notification && <p>notification</p>}
-        {isLoader && (
-          <BallTriangle
-            height={100}
-            width={100}
-            radius={5}
-            color="#4fa94d"
-            ariaLabel="ball-triangle-loading"
-            wrapperClass={{}}
-            wrapperStyle=""
-            visible={true}
-          />
+        <Header onSubmit={this.requestHandler} />
+        <Section>
+          <ImageGallery images={images} openModal={this.openModal} />
+          {showButton && (
+            <Button text="Loade more" onLoadeMore={this.onLoadeMore} />
+          )}
+          {notification && (
+            <Notification text="Sorry, no images were found for your search." />
+          )}
+          {isLoader && (
+            <Circles
+              height="80"
+              width="80"
+              color="#4747bc"
+              ariaLabel="circles-loading"
+              wrapperStyle={{ justifyContent: 'center' }}
+              wrapperClass=""
+              visible={true}
+            />
+          )}
+        </Section>
+
+        {imageModal && (
+          <Modal image={imageModal} closeModal={this.closeModal} />
         )}
       </>
     );

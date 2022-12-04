@@ -9,4 +9,10 @@ ul {
 h1,h2,p {
     margin: 0;
 }
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
 `;

@@ -1,24 +1,12 @@
 import styled from 'styled-components';
 
-const Header = styled.header`
+export const Head = styled.header`
+  position: fixed;
+  width: 100%;
+  top: 0;
   display: flex;
   justify-content: center;
-  padding: 20px 0;
-  background-color: blue;
+  padding: 10px 0;
+  background-color: #4747bc;
+  z-index: 100;
 `;
-
-const Wrapper = styled.div`
-  position: relative;
-`;
-
-const Button = styled.button`
-  position: absolute;
-  left: 0;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  height: 100%;
-`;
-
-export { Header, Button, Input, Wrapper };

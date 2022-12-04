@@ -1,8 +1,10 @@
-const ImageGalleryItem = ({ url }) => {
+import { Item, Img } from './ImageGalleryItem.styled';
+
+const ImageGalleryItem = ({ url, openModal }) => {
   return (
-    <li>
-      <img src={url} alt="" />
-    </li>
+    <Item>
+      <Img src={url} alt="" onClick={openModal} />
+    </Item>
   );
 };
 
