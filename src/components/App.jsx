@@ -36,9 +36,8 @@ class App extends Component {
       this.setState({ isLoader: true, showButton: false });
 
       const {
-        data: { hits },
+        data: { hits, totalHits },
       } = await fetchImages(query, page);
-
       if (!hits.length) {
         this.setState({
           notification: true,
@@ -50,7 +49,7 @@ class App extends Component {
       this.setState(prevState => ({
         isLoader: false,
         images: [...prevState.images, ...desiredQueryProperties(hits)],
-        showButton: true,
+        showButton: this.state.page < Math.ceil(totalHits / 12),
       }));
     } catch (error) {
       console.log(error.message);
